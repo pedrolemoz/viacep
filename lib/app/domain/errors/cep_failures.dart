@@ -12,4 +12,6 @@ class InvalidAlphanumericCharacterInCEPFailure extends CEPFailure {}
 
 class InvalidBlankSpaceInCEPFailure extends CEPFailure {}
 
+class InvalidCEPFormatFailure extends CEPFailure {}
+
 class UnableToGetLocationUsingCEPFailure extends CEPFailure {}

@@ -10,6 +10,9 @@ dependencies:
   # Functional programming features
   dartz: ^0.10.1
 
+  # HTTP Client
+  http: ^0.13.4
+
   flutter:
     sdk: flutter
 

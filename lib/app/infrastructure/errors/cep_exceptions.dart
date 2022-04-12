@@ -4,4 +4,6 @@ class CEPException implements Exception {
   const CEPException({this.message});
 }
 
+class InvalidCEPFormatException extends CEPException {}
+
 class UnableToGetLocationUsingCEPException extends CEPException {}

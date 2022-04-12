@@ -58,6 +58,21 @@ void main() {
   });
 
   test(
+      'Should return InvalidCEPFormatFailure when the DataSource throw InvalidCEPFormatException',
+      () async {
+    // Arrange
+    when(() => dataSourceSpy.getLocationByCEP(tParameters))
+        .thenThrow(InvalidCEPFormatException());
+
+    // Act
+    final result = await repository.getLocationByCEP(tParameters);
+
+    // Assert
+    expect(result.fold(id, id), isA<InvalidCEPFormatFailure>());
+    verify(() => dataSourceSpy.getLocationByCEP(tParameters));
+    verifyNoMoreInteractions(dataSourceSpy);
+  });
+  test(
       'Should return UnableToGetLocationUsingCEPFailure when the DataSource throw UnableToGetLocationUsingCEPException',
       () async {
     // Arrange

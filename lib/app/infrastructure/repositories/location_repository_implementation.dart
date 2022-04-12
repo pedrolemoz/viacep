@@ -19,6 +19,8 @@ class LocationRepositoryImplementation implements LocationRepository {
   ) async {
     try {
       return Right(await dataSource.getLocationByCEP(parameters));
+    } on InvalidCEPFormatException {
+      return Left(InvalidCEPFormatFailure());
     } on UnableToGetLocationUsingCEPException {
       return Left(UnableToGetLocationUsingCEPFailure());
     } catch (exception) {
