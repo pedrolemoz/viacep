@@ -30,13 +30,13 @@ void main() {
 
   test('Should return Location in success case', () async {
     // Arrange
-    const parameters = GetLocationByCEPParameters(cep: '01001000');
+    const tParameters = GetLocationByCEPParameters(cep: '01001000');
     final tLocation = LocationFake();
-    when(() => repository.getLocationByCEP(parameters))
+    when(() => repository.getLocationByCEP(tParameters))
         .thenAnswer((_) async => Right(tLocation));
 
     // Act
-    final result = await usecase(parameters);
+    final result = await usecase(tParameters);
 
     // Assert
     expect(
@@ -47,7 +47,7 @@ void main() {
         tLocation,
       ),
     );
-    verify(() => repository.getLocationByCEP(parameters));
+    verify(() => repository.getLocationByCEP(tParameters));
     verifyNoMoreInteractions(repository);
   });
 
@@ -56,10 +56,10 @@ void main() {
         'Should return InvalidLongCEPFailure if the entered CEP has more than 8 digits',
         () async {
       // Arrange
-      const parameters = GetLocationByCEPParameters(cep: '950100100');
+      const tParameters = GetLocationByCEPParameters(cep: '950100100');
 
       // Act
-      final result = await usecase(parameters);
+      final result = await usecase(tParameters);
 
       // Assert
       expect(result.fold(id, id), isA<InvalidLongCEPFailure>());
@@ -70,10 +70,10 @@ void main() {
         'Should return InvalidShortCEPFailure if the entered CEP has less than 8 digits',
         () async {
       // Arrange
-      const parameters = GetLocationByCEPParameters(cep: '9501000');
+      const tParameters = GetLocationByCEPParameters(cep: '9501000');
 
       // Act
-      final result = await usecase(parameters);
+      final result = await usecase(tParameters);
 
       // Assert
       expect(result.fold(id, id), isA<InvalidShortCEPFailure>());
@@ -84,10 +84,10 @@ void main() {
         'Should return InvalidAlphanumericCharacterInCEPFailure if the entered CEP has an alphanumeric character',
         () async {
       // Arrange
-      const parameters = GetLocationByCEPParameters(cep: '95010A10');
+      const tParameters = GetLocationByCEPParameters(cep: '95010A10');
 
       // Act
-      final result = await usecase(parameters);
+      final result = await usecase(tParameters);
 
       // Assert
       expect(
@@ -101,10 +101,10 @@ void main() {
         'Should return InvalidBlankSpaceInCEPFailure if the entered CEP has a blank space',
         () async {
       // Arrange
-      const parameters = GetLocationByCEPParameters(cep: '9501 010');
+      const tParameters = GetLocationByCEPParameters(cep: '9501 010');
 
       // Act
-      final result = await usecase(parameters);
+      final result = await usecase(tParameters);
 
       // Assert
       expect(result.fold(id, id), isA<InvalidBlankSpaceInCEPFailure>());
@@ -114,13 +114,13 @@ void main() {
 
   test('Should return CEPFailure when an unexpected error occurs', () async {
     // Arrange
-    const parameters = GetLocationByCEPParameters(cep: '01001000');
-    const errorMessage = 'Unexpected error';
-    when(() => repository.getLocationByCEP(parameters))
-        .thenThrow(Exception(errorMessage));
+    const tParameters = GetLocationByCEPParameters(cep: '01001000');
+    const tErrorMessage = 'Unexpected error';
+    when(() => repository.getLocationByCEP(tParameters))
+        .thenThrow(Exception(tErrorMessage));
 
     // Act
-    final result = await usecase(parameters);
+    final result = await usecase(tParameters);
 
     // Assert
     expect(
@@ -128,10 +128,10 @@ void main() {
       isA<CEPFailure>().having(
         (failure) => failure.message,
         'Has the error message from exception',
-        'Exception: $errorMessage',
+        'Exception: $tErrorMessage',
       ),
     );
-    verify(() => repository.getLocationByCEP(parameters));
+    verify(() => repository.getLocationByCEP(tParameters));
     verifyNoMoreInteractions(repository);
   });
 }
