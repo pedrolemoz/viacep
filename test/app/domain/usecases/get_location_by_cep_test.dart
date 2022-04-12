@@ -12,13 +12,13 @@ class LocationRepositorySpy extends Mock implements LocationRepository {}
 class LocationFake extends Fake implements Location {}
 
 void main() {
-  late LocationRepository repository;
+  late LocationRepository repositorySpy;
   late GetLocationByCEP usecase;
 
   setUp(() {
     registerFallbackValue(LocationFake());
-    repository = LocationRepositorySpy();
-    usecase = GetLocationByCEPImplementation(repository);
+    repositorySpy = LocationRepositorySpy();
+    usecase = GetLocationByCEPImplementation(repositorySpy);
   });
 
   test(
@@ -32,7 +32,7 @@ void main() {
     // Arrange
     const tParameters = GetLocationByCEPParameters(cep: '01001000');
     final tLocation = LocationFake();
-    when(() => repository.getLocationByCEP(tParameters))
+    when(() => repositorySpy.getLocationByCEP(tParameters))
         .thenAnswer((_) async => Right(tLocation));
 
     // Act
@@ -47,8 +47,8 @@ void main() {
         tLocation,
       ),
     );
-    verify(() => repository.getLocationByCEP(tParameters));
-    verifyNoMoreInteractions(repository);
+    verify(() => repositorySpy.getLocationByCEP(tParameters));
+    verifyNoMoreInteractions(repositorySpy);
   });
 
   group('CEP validation tests', () {
@@ -63,7 +63,7 @@ void main() {
 
       // Assert
       expect(result.fold(id, id), isA<InvalidLongCEPFailure>());
-      verifyZeroInteractions(repository);
+      verifyZeroInteractions(repositorySpy);
     });
 
     test(
@@ -77,7 +77,7 @@ void main() {
 
       // Assert
       expect(result.fold(id, id), isA<InvalidShortCEPFailure>());
-      verifyZeroInteractions(repository);
+      verifyZeroInteractions(repositorySpy);
     });
 
     test(
@@ -94,7 +94,7 @@ void main() {
         result.fold(id, id),
         isA<InvalidAlphanumericCharacterInCEPFailure>(),
       );
-      verifyZeroInteractions(repository);
+      verifyZeroInteractions(repositorySpy);
     });
 
     test(
@@ -108,7 +108,7 @@ void main() {
 
       // Assert
       expect(result.fold(id, id), isA<InvalidBlankSpaceInCEPFailure>());
-      verifyZeroInteractions(repository);
+      verifyZeroInteractions(repositorySpy);
     });
   });
 
@@ -116,7 +116,7 @@ void main() {
     // Arrange
     const tParameters = GetLocationByCEPParameters(cep: '01001000');
     const tErrorMessage = 'Unexpected error';
-    when(() => repository.getLocationByCEP(tParameters))
+    when(() => repositorySpy.getLocationByCEP(tParameters))
         .thenThrow(Exception(tErrorMessage));
 
     // Act
@@ -131,7 +131,7 @@ void main() {
         'Exception: $tErrorMessage',
       ),
     );
-    verify(() => repository.getLocationByCEP(tParameters));
-    verifyNoMoreInteractions(repository);
+    verify(() => repositorySpy.getLocationByCEP(tParameters));
+    verifyNoMoreInteractions(repositorySpy);
   });
 }
