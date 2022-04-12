@@ -1,0 +1,24 @@
+name: viacep
+description: ViaCEP using Clean Architecture
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.16.2 <3.0.0"
+
+dependencies:
+  # Functional programming features
+  dartz: ^0.10.1
+
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  # Mock library for unit tests
+  mocktail: ^0.3.0
+
+flutter:
+  uses-material-design: true
