@@ -27,10 +27,6 @@ class LocationDataSourceImplementation implements LocationDataSource {
         try {
           final Map<String, dynamic> decodedData = jsonDecode(result.data);
 
-          if (decodedData.isEmpty) {
-            throw UnableToGetLocationUsingCEPException();
-          }
-
           return LocationMapper.fromMap(decodedData);
         } catch (exception) {
           throw UnableToGetLocationUsingCEPException();
